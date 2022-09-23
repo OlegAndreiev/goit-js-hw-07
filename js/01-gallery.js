@@ -1,13 +1,12 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-// console.log(galleryItems);
+console.log(galleryItems);
 // -----------------references--------------------
 const imagesContainer = document.querySelector('.gallery');
-// const modalOpen = document.querySelector('.basicLightbox');
-// const isModalOpen = document.querySelector('.basicLightbox--visible');
+
 // --------------------templates--------------------
-// let imgSrc;
+
 let instance;
 
 // --------------------first render--------------------
@@ -43,11 +42,11 @@ function onImagesContainerClick(evt) {
   const imgSrc = evt.target.dataset.source;
 
   openModal(imgSrc);
-  closeModal();
   noScroll();
 }
 
 function openModal(imgSrc) {
+  document.addEventListener('keydown', closeModal);
   instance = basicLightbox.create(
     `
     <div class="modal">
@@ -61,16 +60,12 @@ function openModal(imgSrc) {
   instance.show();
 }
 
-function closeModal() {
-  document.addEventListener('keydown', evt => {
-    if (evt.code === 'Escape') {
-      instance.close();
-      document.body.style.overflow = '';
-    }
-  });
-  //   document.removeEventListener('keydown', evt);
-
-  // return;
+function closeModal(evt) {
+  if (evt.code === 'Escape') {
+    instance.close();
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', closeModal);
+  }
 }
 
 function noScroll() {
