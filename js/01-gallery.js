@@ -7,8 +7,6 @@ const imagesContainer = document.querySelector('.gallery');
 
 // --------------------templates--------------------
 
-let instance;
-
 // --------------------first render--------------------
 const cardsMarkup = createImgCardsMarkup(galleryItems);
 imagesContainer.insertAdjacentHTML('beforeend', cardsMarkup);
@@ -40,36 +38,24 @@ function onImagesContainerClick(evt) {
     return;
   }
   const imgSrc = evt.target.dataset.source;
-
-  openModal(imgSrc);
-  noScroll();
-}
-
-function openModal(imgSrc) {
-  document.addEventListener('keydown', closeModal);
-  instance = basicLightbox.create(
+  const instance = basicLightbox.create(
     `
-    <div class="modal">
-        <img src="${imgSrc}"/>
-    </div>
-`,
-    {
-      closable: false,
-    }
+       <img src="${imgSrc}"/>
+    `
   );
-  instance.show();
-}
+  openModal(imgSrc);
 
-function closeModal(evt) {
-  if (evt.code === 'Escape') {
-    instance.close();
-    document.body.style.overflow = '';
-    document.removeEventListener('keydown', closeModal);
+  function openModal() {
+    document.addEventListener('keydown', closeModal);
+    instance.show();
   }
-}
 
-function noScroll() {
-  document.body.style.overflow = 'hidden';
+  function closeModal(evt) {
+    if (evt.code === 'Escape') {
+      document.removeEventListener('keydown', closeModal);
+      instance.close();
+    }
+  }
 }
 
 // --------------------Add Event Listener--------------------
